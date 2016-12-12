@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Windows.Input;
+
+using Windows.Devices.Geolocation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.System;
 using Windows.UI.Xaml.Media.Imaging;
 
 using SM.Common;
@@ -15,14 +16,31 @@ namespace SM.WindowsUniversal.ViewModels
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		private string _latLong;
 		private BitmapImage _loadedImage;
 
 		public MainPageViewModel()
 		{
-			LoadPictureComand = new RelayCommand(LoadPicture);
+			LaunchMapsCommand = new RelayCommand(LaunchMaps);
+			LoadLocationCommand = new RelayCommand(LoadLocation);
+			LoadPictureCommand = new RelayCommand(LoadPicture);
 		}
 
-		public ICommand LoadPictureComand { get; private set; }
+		public string LatitudeLongitude
+		{
+			get { return _latLong; }
+			set
+			{
+				_latLong = value;
+				OnPropertyChanged(nameof(LatitudeLongitude));
+			}
+		}
+
+		public ICommand LaunchMapsCommand { get; private set; }
+
+		public ICommand LoadLocationCommand { get; private set; }
+
+		public ICommand LoadPictureCommand { get; private set; }
 
 		public BitmapImage LoadedImage
 		{
@@ -34,17 +52,41 @@ namespace SM.WindowsUniversal.ViewModels
 			}
 		}
 
-		void OnPropertyChanged(string propertyName)
+		private async void LaunchMaps()
 		{
-			if (propertyName != null)
-			{
-				PropertyChangedEventHandler handler = PropertyChanged;
+			// A link to descriptions of other URI schemes...
+			// https://msdn.microsoft.com/en-us/windows/uwp/launch-resume/launch-default-app
+			// https://msdn.microsoft.com/en-us/windows/uwp/launch-resume/launch-maps-app
 
-				if (handler != null)
-				{
-					handler(this, new PropertyChangedEventArgs(propertyName));
-				}
+			// Center on New York City
+			// var uriNewYork = new Uri(@"bingmaps:?cp=40.726966~-74.006076");
+
+			var centerParam = LatitudeLongitude?.Replace(" ", string.Empty).Replace(",", "~");
+
+			if (string.IsNullOrEmpty(centerParam))
+			{
+				// Just launch the map app...
+
+				await Launcher.LaunchUriAsync(new Uri("bingmaps:"));
 			}
+			else
+			{
+				// Uses tilde ~
+				//await Launcher.LaunchUriAsync(new Uri($"bingmaps:cp={param}&lvl=10"));
+
+				var pointParam = centerParam.Replace("~", "_");
+
+				await Launcher.LaunchUriAsync(new Uri($"bingmaps:cp=point.{pointParam}_Test%20Point&cp={centerParam}&lvl=16"));
+			}
+		}
+
+		private async void LoadLocation()
+		{
+			var geolocator = new Geolocator();
+
+			var position = await geolocator.GetGeopositionAsync();
+
+			LatitudeLongitude = $"{position.Coordinate.Point.Position.Latitude} , {position.Coordinate.Point.Position.Longitude}";
 		}
 
 		private async void LoadPicture()
@@ -70,6 +112,14 @@ namespace SM.WindowsUniversal.ViewModels
 
 					LoadedImage = bitmap;
 				}
+			}
+		}
+
+		private void OnPropertyChanged(string propertyName)
+		{
+			if (propertyName != null && PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}

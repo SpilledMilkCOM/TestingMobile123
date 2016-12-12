@@ -21,15 +21,29 @@
 
 		<StackPanel>
 			<AppBar>
-				<AppBarButton Label="Pictures"
-							  Icon="Pictures"
-							  Command="{Binding LoadPictureComand}"/>
+				<StackPanel Orientation="Horizontal">
+					<AppBarButton Label="Picture"
+								  Icon="Pictures"
+								  Command="{Binding LoadPictureCommand}" />
+					<AppBarButton Label="Location"
+								  Icon="World"
+								  Command="{Binding LoadLocationCommand}" />
+				</StackPanel>
 			</AppBar>
 
 			<TextBlock Text="Testing Mobile 1... 2... 3..."
 					   FontSize="30" />
-			<TextBlock Text="Hello World"
-					   FontSize="12" />
+
+			<StackPanel Orientation="Horizontal">
+				<TextBlock FontSize="14"
+						   Text="Lat / Long:" />
+				<TextBox FontSize="14"
+						 Text="{Binding LatitudeLongitude, Mode=TwoWay}"/>
+				<AppBarButton Label="Map"
+							  Icon="World"
+							  Command="{Binding LaunchMapsCommand}" />
+			</StackPanel>
+
 			<Image Source="/Assets/TestPattern.jpg"
 				   Height="100" />
 
