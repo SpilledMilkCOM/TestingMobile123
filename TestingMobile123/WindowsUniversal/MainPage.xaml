@@ -34,11 +34,13 @@
 			<TextBlock Text="Testing Mobile 1... 2... 3..."
 					   FontSize="30" />
 
-			<StackPanel Orientation="Horizontal">
+			<StackPanel Orientation="Vertical">
 				<TextBlock FontSize="14"
 						   Text="Lat / Long:" />
 				<TextBox FontSize="14"
-						 Text="{Binding LatitudeLongitude, Mode=TwoWay}"/>
+						 Text="{Binding Latitude, Mode=TwoWay}"/>
+				<TextBox FontSize="14"
+						 Text="{Binding Longitude, Mode=TwoWay}" />
 				<AppBarButton Label="Map"
 							  Icon="World"
 							  Command="{Binding LaunchMapsCommand}" />

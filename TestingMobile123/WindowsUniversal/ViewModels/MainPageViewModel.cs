@@ -16,7 +16,8 @@ namespace SM.WindowsUniversal.ViewModels
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private string _latLong;
+		private string _latitude;
+		private string _longitude;
 		private BitmapImage _loadedImage;
 
 		public MainPageViewModel()
@@ -26,13 +27,23 @@ namespace SM.WindowsUniversal.ViewModels
 			LoadPictureCommand = new RelayCommand(LoadPicture);
 		}
 
-		public string LatitudeLongitude
+		public string Latitude
 		{
-			get { return _latLong; }
+			get { return _latitude; }
 			set
 			{
-				_latLong = value;
-				OnPropertyChanged(nameof(LatitudeLongitude));
+				_latitude = value;
+				OnPropertyChanged(nameof(Latitude));
+			}
+		}
+
+		public string Longitude
+		{
+			get { return _longitude; }
+			set
+			{
+				_longitude = value;
+				OnPropertyChanged(nameof(Longitude));
 			}
 		}
 
@@ -61,7 +72,7 @@ namespace SM.WindowsUniversal.ViewModels
 			// Center on New York City
 			// var uriNewYork = new Uri(@"bingmaps:?cp=40.726966~-74.006076");
 
-			var centerParam = LatitudeLongitude?.Replace(" ", string.Empty).Replace(",", "~");
+			var centerParam = $"{Latitude}~{Longitude}";
 
 			if (string.IsNullOrEmpty(centerParam))
 			{
@@ -86,7 +97,8 @@ namespace SM.WindowsUniversal.ViewModels
 
 			var position = await geolocator.GetGeopositionAsync();
 
-			LatitudeLongitude = $"{position.Coordinate.Point.Position.Latitude} , {position.Coordinate.Point.Position.Longitude}";
+			Latitude = position.Coordinate.Point.Position.Latitude.ToString();
+			Longitude = position.Coordinate.Point.Position.Longitude.ToString();
 		}
 
 		private async void LoadPicture()
