@@ -1,5 +1,6 @@
 # TestingMobile123
 Testing mostly Xamarin to see which platforms (Windows, iOS, Android, Web?) I can deploy to AND to see how much code sharing there is.
+Only the UWP code is in so far, I'll be trying to port to Android soon.
 
 ### Loading a Picture
 
