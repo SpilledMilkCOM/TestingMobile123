@@ -25,9 +25,12 @@ namespace SM.WindowsUniversal.ViewModels
 			LaunchMapsCommand = new RelayCommand(LaunchMaps);
 			LoadLocationCommand = new RelayCommand(LoadLocation);
 			LoadPictureCommand = new RelayCommand(LoadPicture);
-		}
 
-		public string Latitude
+		    Latitude = string.Empty;
+            Longitude = string.Empty;
+        }
+
+        public string Latitude
 		{
 			get { return _latitude; }
 			set
