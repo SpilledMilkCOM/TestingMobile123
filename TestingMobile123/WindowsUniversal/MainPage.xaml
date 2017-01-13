@@ -23,6 +23,7 @@
         <StackPanel>
 
             <!-- Make the "App Bar" a stack panel because it's always visible. -->
+            <!-- All of the Icons enumerated on this page - https://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.xaml.controls.symbol.aspx -->
 
             <StackPanel Background="{ThemeResource AppBarBackgroundThemeBrush}"
                         Orientation="Horizontal">
@@ -36,6 +37,9 @@
                               Icon="Map"
                               IsEnabled="{Binding Latitude.Length}"
                               Command="{Binding LaunchMapsCommand}" />
+                <AppBarButton Label="Tile"
+                              Icon="Refresh"
+                              Command="{Binding UpdateLiveTileCommand}" />
             </StackPanel>
 
             <TextBlock Text="Testing Mobile 1 2 3"

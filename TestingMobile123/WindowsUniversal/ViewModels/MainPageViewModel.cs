@@ -25,8 +25,9 @@ namespace SM.WindowsUniversal.ViewModels
 			LaunchMapsCommand = new RelayCommand(LaunchMaps);
 			LoadLocationCommand = new RelayCommand(LoadLocation);
 			LoadPictureCommand = new RelayCommand(LoadPicture);
+            UpdateLiveTileCommand = new RelayCommand(UpdateLiveTile);
 
-		    Latitude = string.Empty;
+            Latitude = string.Empty;
             Longitude = string.Empty;
         }
 
@@ -56,7 +57,9 @@ namespace SM.WindowsUniversal.ViewModels
 
 		public ICommand LoadPictureCommand { get; private set; }
 
-		public BitmapImage LoadedImage
+        public ICommand UpdateLiveTileCommand { get; private set; }
+
+        public BitmapImage LoadedImage
 		{
 			get { return _loadedImage; }
 			private set
@@ -130,12 +133,16 @@ namespace SM.WindowsUniversal.ViewModels
 			}
 		}
 
-		private void OnPropertyChanged(string propertyName)
+	    private async void UpdateLiveTile()
+	    {
+	    }
+
+	    private void OnPropertyChanged(string propertyName)
 		{
 			if (propertyName != null && PropertyChanged != null)
 			{
 				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
-	}
+    }
 }
